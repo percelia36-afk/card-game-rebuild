@@ -1,33 +1,34 @@
 import Link from "next/link";
+import EmbossedButton from "./EmbossedButton";
 
 export default function MenuButtons() {
   return (
-    <div className="flex flex-col items-center justify-center gap-6 mt-12">
-      {/* PLAY */}
-      <button className="bg-red-600 text-black font-bold py-3 px-16 rounded hover:bg-red-700 transition">
-        PLAY
-      </button>
-
-      {/* SIGNUP */}
-      <Link href="/signup">
-        <button className="bg-red-600 text-black font-bold py-3 px-16 rounded hover:bg-red-700 transition">
-          Signup
-        </button>
+    <div className="relative w-full h-screen overflow-hidden flex flex-col items-center justify-center">
+      {/* PLAY - Centered */}
+      <Link href="/play">
+        <EmbossedButton className="mb-6 px-28 py-6 text-3xl">
+          PLAY
+        </EmbossedButton>
       </Link>
 
-      {/* RULES */}
-      <Link href="/rules">
-        <button className="bg-red-600 text-black font-bold py-3 px-16 rounded hover:bg-red-700 transition">
-          Rules
-        </button>
-      </Link>
+      {/* SIGNUP + RULES - Side by Side Under PLAY */}
+      <div className="flex gap-10">
+        <Link href="/signup">
+          <EmbossedButton className="px-20 py-5 text-xl">Signup</EmbossedButton>
+        </Link>
+        <Link href="/rules">
+          <EmbossedButton className="px-20 py-5 text-xl">Rules</EmbossedButton>
+        </Link>
+      </div>
 
-      {/* SETTINGS */}
-      <Link href="/settings">
-        <button className="bg-red-600 text-black font-bold py-3 px-16 rounded hover:bg-red-700 transition">
-          Settings
-        </button>
-      </Link>
+      {/* SETTINGS - Top Right (Text Only) */}
+      <div className="absolute top-4 right-4">
+        <Link href="/settings">
+          <EmbossedButton className="px-10 py-3 text-lg">
+            Settings
+          </EmbossedButton>
+        </Link>
+      </div>
     </div>
   );
 }
