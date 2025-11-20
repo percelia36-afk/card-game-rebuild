@@ -1,5 +1,6 @@
 import Layout from "./layout";
 import NavBar from "@/components/NavBar";
+import GetLatestPost from "@/components/GetLatestPost";
 
 export default function HomePage() {
   return (
@@ -11,6 +12,8 @@ export default function HomePage() {
           This is the main landing page. Posts will be handled by another
           teammate.
         </p>
+        <p>Latest Post is included below</p>
+        <GetLatestPost />
       </main>
     </>
   );

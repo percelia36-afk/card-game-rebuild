@@ -1,6 +1,7 @@
 // /src/app/posts/page.js
 
 import Link from "next/link";
+import Image from "next/image";
 import { db } from "@/utils/dbConn"; // includes pg import so no need
 import NavBar from "@/components/NavBar"; // import custom component used
 
@@ -10,7 +11,13 @@ export default async function GamePosts({ searchParams }) {
   // db connection imported above.
 
   // fetch  gameposts
-  const res = (await db.query(`SELECT * FROM gameposts`)).rows;
+  const res = (
+    await db.query(
+      `SELECT gamepost.id, gameposts.* users.gamer_tag
+      FROM gameposts
+      JOIN users ON gameposts.user_id = users.id`
+    )
+  ).rows;
   let gamePosts = res;
 
   console.log(gamePosts);
@@ -54,11 +61,14 @@ export default async function GamePosts({ searchParams }) {
                   <Link href={`/posts/${post.id}`}>
                     <h1 className="">
                       {post.title} <br />
-                      ...By {post.user_id}{" "}
-                      {/* would need to lookup username from clerk or gamer tag from users table */}
+                      ...By {post.gamer_tag}{" "}
+                      {/* SQL query modded to lookup gamer_tag from users table */}
                     </h1>
                     <p className="">{post.content}</p>
-                    <p></p>
+                    {/* date posted and image, with alt text to add here*/}
+                    <p>Posted at: {post.created_at}</p>{" "}
+                    {/* no doubt time stamp needs interpreting*/}
+                    <Image src={post.imgurl} alt={post.imginfo} />
                   </Link>
                 </div>
               );
