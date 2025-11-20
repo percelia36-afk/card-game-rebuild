@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { db } from "@/utils/dbConn"; // includes pg import so no need
-import NavBar from "@/componenets/NavBar"; // import custom component used
+import NavBar from "@/components/NavBar"; // import custom component used
 
 export default async function GamePosts({ searchParams }) {
   // This page should display all Game posts

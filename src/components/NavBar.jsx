@@ -1,7 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useUser, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import {
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+  useUser,
+} from "@clerk/nextjs";
 
 export default function NavBar() {
   const { user } = useUser();
@@ -40,22 +47,8 @@ export default function NavBar() {
           </SignedIn>
 
           <SignedOut>
-            <li>
-              <Link
-                href="/sign-up"
-                className="hover:text-gray-300 transition-colors"
-              >
-                Sign In
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/sign-up"
-                className="hover:text-gray-300 transition-colors"
-              >
-                Sign Up
-              </Link>
-            </li>
+            <SignInButton></SignInButton>
+            <SignUpButton></SignUpButton>
           </SignedOut>
         </ul>
       </div>

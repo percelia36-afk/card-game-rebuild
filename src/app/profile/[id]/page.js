@@ -1,44 +1,45 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { SignUp } from "@clerk/nextjs";
+import { useEffect } from "react";
+import { useUser } from "@clerk/nextjs";
 import { db } from "@/utils/dbConn";
 
-export default function UserProfilePage() {
-  const { id } = useParams();
-  const [profile, setProfile] = useState(null);
+export default function SignUpPage() {
+  const { user } = useUser();
 
   useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const result = await db
-          .select("*")
-          .from("users")
-          .where({ clerk_id: id })
-          .limit(1);
+    if (!user) return;
 
-        if (result.length > 0) {
-          setProfile(result[0]);
-        }
+    const insertUser = async () => {
+      try {
+        await db.insert("users", {
+          clerk_id: user.id,
+          gamer_tag: user.username || user.firstName || "Unknown",
+          user_profile: user.imageUrl || "",
+        });
       } catch (err) {
-        console.error("Failed to load profile:", err);
+        console.error("User insert failed or already exists:", err);
       }
     };
 
-    fetchProfile();
-  }, [id]);
-
-  if (!profile) return <div>Loading profile...</div>;
+    // Delay to ensure Clerk session is stable
+    const timer = setTimeout(() => insertUser(), 1000);
+    return () => clearTimeout(timer);
+  }, [user]);
 
   return (
-    <div className="max-w-xl mx-auto p-6">
-      <h1 className="text-2xl font-bold mb-2">{profile.gamer_tag}</h1>
-      <img
-        src={profile.user_profile}
-        alt="Profile"
-        className="w-24 h-24 rounded-full mb-4"
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <SignUp
+        path="/sign-up"
+        routing="path"
+        appearance={{
+          elements: {
+            formButtonPrimary:
+              "bg-indigo-600 hover:bg-indigo-700 text-white font-semibold",
+          },
+        }}
       />
-      <p>Clerk ID: {profile.clerk_id}</p>
     </div>
   );
 }
