@@ -1,12 +1,13 @@
 "use client";
 
-import { SignUp } from "@clerk/nextjs";
 import { useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
 import { db } from "@/utils/dbConn";
 
-export default function SignUpPage() {
+export default function PostAuth() {
   const { user } = useUser();
+  const router = useRouter();
 
   useEffect(() => {
     if (!user) return;
@@ -16,28 +17,22 @@ export default function SignUpPage() {
         await db.insert("users", {
           clerk_id: user.id,
           gamer_tag: user.username || user.firstName || "Unknown",
+          firstName: user.firstName || "",
           user_profile: user.imageUrl || "",
         });
       } catch (err) {
-        console.error("User insert failed or already exists:", err);
+        console.error("User insert failed:", err);
+      } finally {
+        router.push(`/profile/${user.id}`);
       }
     };
 
     insertUser();
-  }, [user]);
+  }, [user, router]);
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-100">
-      <SignUp
-        path="/sign-up"
-        routing="path"
-        appearance={{
-          elements: {
-            formButtonPrimary:
-              "bg-indigo-600 hover:bg-indigo-700 text-white font-semibold",
-          },
-        }}
-      />
+    <div className="min-h-screen flex items-center justify-center text-gray-700">
+      <p>Setting up your profile...</p>
     </div>
   );
 }
