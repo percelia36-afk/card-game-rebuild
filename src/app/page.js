@@ -1,10 +1,17 @@
 import Layout from "./layout";
-import MenuButtons from "../components/MenuButtons";
+import NavBar from "./components/NavBar";
 
-export default function Home() {
+export default function HomePage() {
   return (
-    <div className="relative w-full h-screen overflow-hidden">
-      <MenuButtons />
-    </div>
+    <>
+      <NavBar />
+      <main className="p-6">
+        <h1 className="text-3xl font-bold mb-4">Welcome to the Home Page</h1>
+        <p>
+          This is the main landing page. Posts will be handled by another
+          teammate.
+        </p>
+      </main>
+    </>
   );
 }
