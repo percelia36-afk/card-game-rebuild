@@ -1,6 +1,7 @@
 import Layout from "./layout";
 import NavBar from "@/components/NavBar";
 import GetLatestPost from "@/components/GetLatestPost";
+import db from "@/utils/dbConn";
 
 export default function HomePage() {
   return (
